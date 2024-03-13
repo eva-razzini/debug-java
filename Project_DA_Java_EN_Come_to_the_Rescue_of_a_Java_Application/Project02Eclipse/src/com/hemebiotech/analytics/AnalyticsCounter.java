@@ -3,6 +3,11 @@ package com.hemebiotech.analytics;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import java.io.IOException;
+
 
 public class AnalyticsCounter {
 	private static int headacheCount = 0;	
@@ -10,6 +15,7 @@ public class AnalyticsCounter {
 	private static int pupilCount = 0;		
 	
 	public static void main(String args[]) throws Exception {
+		Map<String, Integer> symptomMap = new HashMap<>();
 		// first get input
 		BufferedReader reader = new BufferedReader (new FileReader("C:/Users/Eva/Desktop/openclassroom/debug-java/Project_DA_Java_EN_Come_to_the_Rescue_of_a_Java_Application/Project02Eclipse/symptoms.txt"));
 		String line = reader.readLine();
