@@ -1,48 +1,36 @@
 package com.hemebiotech.analytics;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import java.io.IOException;
-
+import java.util.TreeMap;
 
 public class AnalyticsCounter {
-	private static int headacheCount = 0;	
-	private static int rashCount = 0;		
-	private static int pupilCount = 0;		
-	
+	public Map<String, Integer> countSymptoms(List<String> symptoms) {
+        Map<String, Integer> symptomCounts = new TreeMap<>();
+
+        for (String symptom : symptoms) {
+            symptomCounts.put(symptom, symptomCounts.getOrDefault(symptom, 0) + 1);
+        }
+
+        return symptomCounts;
+    }
+
 	public static void main(String args[]) throws Exception {
-		Map<String, Integer> symptomMap = new HashMap<>();
-		// first get input
-		BufferedReader reader = new BufferedReader (new FileReader("C:/Users/Eva/Desktop/openclassroom/debug-java/Project_DA_Java_EN_Come_to_the_Rescue_of_a_Java_Application/Project02Eclipse/symptoms.txt"));
-		String line = reader.readLine();
+		String inputFilePath = "./Project_DA_Java_EN_Come_to_the_Rescue_of_a_Java_Application/Project02Eclipse/symptoms.txt";
+        String outputFilePath = "./Project_DA_Java_EN_Come_to_the_Rescue_of_a_Java_Application/Project02Eclipse/result.out";
+        
+        try {
+			ISymptomReader symptomReader = new ReadSymptomDataFromFile(inputFilePath);
+			List<String> symptoms = symptomReader.GetSymptoms();
 
-		while (line != null) {	
-			if (line.equals("headache")) {
-				headacheCount++;
-			}
-			else if (line.equals("rash")) {
-				rashCount++;
-			}
-			else if (line.contains("pupils")) {
-				pupilCount++;
-			}
+			AnalyticsCounter analyticsCounter = new AnalyticsCounter();
+            Map<String, Integer> symptomCounts = analyticsCounter.countSymptoms(symptoms);
 
-			line = reader.readLine();	// get another symptom
+			ISymptomWriter symptomWriter = new WriteSymptomDataToFile(outputFilePath);
+			symptomWriter.writeSymptoms(symptomCounts);
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		System.out.println("number of headaches: " + headacheCount);
-		System.out.println("number of rash: " + rashCount);
-		System.out.println("number of pupils: " + pupilCount);
-
-		// next generate output
-		FileWriter writer = new FileWriter ("C:/Users/Eva/Desktop/openclassroom/debug-java/Project_DA_Java_EN_Come_to_the_Rescue_of_a_Java_Application/Project02Eclipse/result.out");
-		writer.write("headache: " + headacheCount + "\n");
-		writer.write("rash: " + rashCount + "\n");
-		writer.write("dialated pupils: " + pupilCount + "\n");
-		writer.close();
 	}
 }
