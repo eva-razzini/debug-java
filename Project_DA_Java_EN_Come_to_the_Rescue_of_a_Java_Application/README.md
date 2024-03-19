@@ -26,7 +26,7 @@ L'application compte les occurrences des symptômes à partir d'un fichier d'ent
 
 Pour exécuter l'application, utilisez la classe `AnalyticsCounter` avec les arguments appropriés :
 
-bashCopy code
+bash
 
 `java com.hemebiotech.analytics.AnalyticsCounter`
 
